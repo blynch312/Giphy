@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="btn" id="buttonDiv">
+    <div class="btn sports" id="buttonDiv">
 
     </div>
     <div>
@@ -36,7 +36,7 @@
                 $("#buttonDiv").empty();
                 for (i = 0; i < topics.length; i++) {
                     var newButton = $("<button>");
-                    newButton.addClass("btn");
+                    newButton.addClass("btn sports");
                     newButton.attr("name", topics[i]);
                     newButton.text([topics[i]]);
                     $("#buttonDiv").prepend(newButton);
@@ -46,23 +46,21 @@
 
             $("#submitBtn").on("click", function (event) {
                 event.preventDefault();
-                name = $("#submit").val();
-                console.log(name);
-                $("#buttonDiv").prepend("<button class='buttons' value=" + name + ">" + name + "</button>");
-                var queryURL = "http://api.giphy.com/v1/gifs/search?q=";
-                var endURL = "&api_key=dc6zaTOxFJmzC&limit=10";
-                var newURL = queryURL + name + endURL;
+                var name = $("#submit").val().trim();
+                topics.push(name);
+                arrayBtn();
+
 
 
 
             })
-            $(document).on("click", ".buttons", function (event) {
+            $(document).on("click", ".sports", function (event) {
                 event.preventDefault();
-                name = $(this).val();
+                var sport = $(this).attr("name")
                 var queryURL = "http://api.giphy.com/v1/gifs/search?q=";
                 var endURL = "&api_key=dc6zaTOxFJmzC&limit=10";
-                var newURL = queryURL + name + endURL;
-                console.log("buttonClick" + name)
+                var newURL = queryURL + sport + endURL;
+                console.log("buttonClick" + sport)
 
                 $.ajax({
                     url: newURL,
@@ -74,7 +72,20 @@
                     }
 
                 });
+                for (var i = 0; i < response.data.length; i++) {
+                    // To access an individual rating
+                    var ratingDiv = $("<div class='rating:'>")
+                    var rating = response.data[i].rating
+                    var pOne = $("<p>").text("Rating: " + rating)
+                    ratingDiv.append(pOne);
+                    // To access an individual still image
+                    var still = response.data[i].images.fixed_height_still.url
+                    // To access an individual gif
+                    var animated = response.data[i].images.fixed_width.url
+                    // The for loop will move through each response from the ajax call and perform the same action on each item
+                }
             })
+            arrayBtn();
         })
 
 
